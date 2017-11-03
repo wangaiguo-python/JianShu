@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}
+    <title>简书--所有分类</title>
+{% endblock %}
+
+{% block main %}
+    {% for topic in topics %}
+        <h1>
+            <a href="{% url 'show_one_topic' topic.id %}">
+                <span class="label label-primary"><img src="{{ topic.img.url }}" style="width: 30px; height: 30px; ">  {{ topic.name }}</span>
+            </a>
+        </h1>
+    {% endfor %}
+
+{% endblock %}
+

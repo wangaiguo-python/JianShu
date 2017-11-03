@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}
+   简书-APP文章详情
+{% endblock %}
+
+
+
+{% block main %}
+    <div style="margin-top: 10px; background-color: #6ce26c">
+        <h2><div>{{ article.user.username }}</div></h2>
+        <h2>
+            <span class="label label-primary"><img src="{{ article.topic.img.url }}" style="width: 30px; height: 30px;">  {{ article.topic.name }}</span>
+        </h2>
+        <div>{{ article.title }}</div>
+        <div>{{ article.content | safe }}</div>
+        <div id="article_id" style="display: none;">{{ article.id }}</div>
+        <div style="color: red;">{{ article.views }}</div>
+        <div style="color: greenyellow;">{{ article.Btime }}</div>
+    </div>
+
+    <div>
+        <h4 style="color: red;"></h4>
+        <form method="post">
+            {% for foo in form %}
+                <label>{{ foo.name }}</label>:{{ foo }}
+            {% endfor %}
+
+{#            <textarea name="content" placeholder="请输入您要评论的内容" style="width: 500px; height: 200px; background-color: orange;"></textarea>#}
+            <br>
+            <input type="submit" style="color: blue;">
+{#            <a type="submit" href="{% url 'show_article_comment' article.id  1 %}">提交</a>#}
+        </form>
+    </div>
+
+    <div name="comments" id="comments">
+             {% for comment in comments %}
+                 <div id="comment_item">
+{#                    <h3>{{ comment.owner.username }}</h3>#}
+{#                    <div>{{ comment.content }}</div>#}
+{#                    <label style="color: greenyellow;">{{ comment.btime }}</label>#}
+{#                    <div style="width: 1000px; background-color: red; height: 2px;"></div>#}
+                 </div>
+            {% endfor %}
+    </div>
+
+{% endblock %}
+
+{% block script %}
+     <script>
+        $(function () {
+            var urlll="{% url 'show_article_all_comment' '-placeholder-' %}";
+            var url_add = "{% url 'add_article_comment' '-placeholder-' %}";
+
+            var append_new_comment = function (comment) {
+                var $div = $('#comments');
+                var $div_item = $('#comment_item');
+                $div_item.html("" +
+                        "<h3>" + comment.username + "</h3>" +
+                        "<div>" + comment.content + "</div>" +
+                        "<label style='color: greenyellow'>" + comment.time + "</label>" +
+                        "<div style='width: 1000px; background-color: yellow; height: 2px;'>" + "</div>"
+
+                );
+                $div.append($div_item);
+
+            };
+            var fetch_comment_list = function () {
+                $.ajax({
+
+                    type: 'GET',
+                    url: urlll.replace("-placeholder-", $("#article_id").text()),
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    success: function(retval){
+                        if (retval.code === 0){
+{#                            console.log(retval);#}
+                            $.each (retval.result, function (i, e) {
+                                append_new_comment(e);
+                                console.log(e);
+                            });
+                        }
+                        else {
+                            alert('不知道什么错误');
+                        }
+                    }
+                })
+            };
+            fetch_comment_list();
+        })
+    </script>
+
+{% endblock %}
+

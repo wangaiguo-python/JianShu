@@ -1,0 +1,39 @@
+#忽略根目录下的所有隐藏文件
+.*
+
+#不要忽略 .git 开头的文件
+!/.git*
+
+#Python basic
+*.py[co]
+__pycache__
+/build
+/dist
+/*.egg-info
+
+#Python virtualenv
+/local
+
+#忽略所有的备份文件
+*~
+
+#ansible
+/ansible/*.secret
+*.retry
+
+#django static and media root and others
+/media
+local_settings.py
+db.sqlite3
+*.db
+*.pid
+
+#或略编译时加了 -pg 的程序生成的 gmon.out
+gmon.out
+
+#gettext *.mo
+*.mo
+
+*others
+/run
+/runtime

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}
+    我的界面
+{% endblock %}
+{% block main %}
+    {% if user %}
+        <div>{{ user.username }}</div>
+        <div>{{ user.id }}</div>
+        <div>{{ user.last_login }}</div>
+    {% endif %}
+    {% if aritcles %}
+        {% for foo in aritcles %}
+            <div>{{ foo.content | safe }}</div>
+        {% endfor %}
+    {% endif %}
+
+
+{% endblock %}

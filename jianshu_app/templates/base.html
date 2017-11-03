@@ -1,0 +1,83 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}简书-创作你的创作{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+	<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    {% block css %}{% endblock %}
+    {% block script %}{% endblock %}
+</head>
+<body>
+{#导航栏#}
+<nav class="navbar navbar-inverse" role="navigation">
+    <div class="container-fluid">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="{% url 'index' %}">简书首页</a>
+    </div>
+    <div class="navbar-header">
+        <a class="navbar-brand" href="{% url 'index' %}" style="font-size:14px; margin-left:6px;">发现</a>
+    </div>
+    <div class="navbar-header">
+        <a class="navbar-brand" href="#" style="font-size:14px; margin-left:6px;">关注</a>
+    </div>
+    <div>
+        <!--向左对齐-->
+        <ul class="nav navbar-nav navbar-left">
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    消息
+                    <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="#">评论</a></li>
+                    <li><a href="#">简信</a></li>
+                    <li><a href="#">投稿请求</a></li>
+                    <li><a href="#">喜欢和赞</a></li>
+                    <li><a href="#">关注</a></li>
+                    <li><a href="#">赞赏</a></li>
+                </ul>
+            </li>
+        </ul>
+         <form class="navbar-form navbar-left" role="search" action="{% url 'search' %}" method="post">
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="Search" name="search">
+            </div>
+            <button type="submit" class="btn btn-default">搜索</button>
+        </form>
+        <!--向右对齐-->
+        <form class="navbar-form navbar-right" role="search">
+            <li type="" class="btn btn-default">
+                <a href="{% url 'editArticle' %}">写文章</a>
+            </li>
+        </form>
+        <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+                <a href="{% url 'mine' %}" class="dropdown-toggle" data-toggle="dropdown">
+                    我的 <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="{% url 'mine' %}">我的主页</a></li>
+                    <li><a href="#">收藏的文章</a></li>
+                    <li><a href="#">喜欢的文章</a></li>
+                    <li><a href="#">我的钱包</a></li>
+                    <li><a >设置</a></li>
+                    <li><a href="#">帮助与反馈</a></li>
+                </ul>
+            </li>
+        </ul>
+
+    </div>
+    </div>
+</nav>
+<div class="container">
+   {% block banner %}{% endblock %}
+    {% block main %}{% endblock %}
+</div>
+
+</body>
+
+
+</html>

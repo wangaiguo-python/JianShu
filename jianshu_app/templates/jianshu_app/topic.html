@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}
+    <title>简书--topic</title>
+{% endblock %}
+
+{% block main %}
+    <span class="label label-primary"><img src="{{ topic.img.url }}" style="width: 30px; height: 30px;">  {{ topic.name }}</span>
+    {% if articles %}
+        {% for article in articles %}
+            <div style="box-shadow:gainsboro ">
+                <div>{{ article.title }}</div>
+                <div style="margin-top: 10px; box-shadow: #00a0e9;">{{ article.content | safe }}</div>
+                <div style="width: 1000px; background-color: red; height: 2px;"></div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div>暂时没有分类相关</div>
+    {% endif %}
+
+
+{% endblock %}
+
+

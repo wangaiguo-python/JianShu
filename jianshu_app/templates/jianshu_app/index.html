@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block title %}简书APP{% endblock %}
+{% block main %}
+<div>
+    <div id="myCarousel" class="carousel slide">
+        <!-- 轮播（Carousel）指标 -->
+        <ol class="carousel-indicators">
+            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+            <li data-target="#myCarousel" data-slide-to="1"></li>
+            <li data-target="#myCarousel" data-slide-to="2"></li>
+        </ol>
+        <!-- 轮播（Carousel）项目 -->
+        <div class="carousel-inner">
+            <div class="item active">
+                <img style="height: 450px; width: 100%; background-color: #0000cc;" src="/wp-content/uploads/2014/07/slide1.png" alt="First slide">
+            </div>
+            <div class="item">
+                <img style="height: 450px;width: 100%; background-color: green;" src="/wp-content/uploads/2014/07/slide2.png" alt="Second slide">
+            </div>
+            <div class="item">
+                <img style="height: 450px;width: 100%; background-color: yellow;" src="/wp-content/uploads/2014/07/slide3.png" alt="Third slide">
+            </div>
+        </div>
+        <!-- 轮播（Carousel）导航 -->
+        <a class="carousel-control left" href="#myCarousel"
+           data-slide="prev">《</a>
+        <a class="carousel-control right" href="#myCarousel"
+           data-slide="next">》</a>
+    </div>
+
+    <h2><li><a href="{% url 'select_time' 1 %}"><span class="label label-success">新上榜 ></span></a></li></h2>
+    <h2><li><a href="{% url 'select_time' 24 %}"><span class="label label-success">日报 ></span></a></li></h2>
+    <h2><li><a href="{% url 'select_time' 168%}"><span class="label label-success">7日热门 ></span></a></li></h2>
+    <h2><li><a href="{% url 'select_time' 720 %}"><span class="label label-success">30日热门 ></span></a></li></h2>
+
+    {% for topic in topics %}
+          <h2>
+            <a href="{% url 'show_one_topic' topic.id %}">
+                <span class="label label-primary"><img src="{{ topic.img.url }}" style="width: 30px; height: 30px;">  {{ topic.name }}</span>
+            </a>
+          </h2>
+    {% endfor %}
+
+    <h1 style="float:right;">
+        <a href="{% url 'show_all_topics' %}">所有分类  >></a>
+    </h1>
+
+    {% for article in articles %}
+        <p3><a href="{% url 'show_one_article' article.id %}">{{ article.title }}</a></p3>
+        <div style="margin-top: 10px; box-shadow: #00a0e9;">{{ article.content | safe }}</div>
+        <div style="color: red;">{{ article.topic.name }}</div>
+        <div style="width: 1000px; background-color: red; height: 2px;"></div>
+    {% endfor %}
+
+    <script>
+        $(document).ready(function () {
+            $('#myCarousel').carousel({interval: 5000});//每隔5秒自动轮播
+        });
+    </script>
+</div>
+{% endblock %}

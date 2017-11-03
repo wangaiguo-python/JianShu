@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}
+    搜索结果
+{% endblock %}
+{% block main %}
+    {% if result %}
+        {% for foo in result %}
+            <div style="color: green;">{{ foo.title }}</div>
+            <div>{{ foo.content | safe }}</div>
+        {% endfor %}
+    {% else %}
+        <div style="color: red;">没有结果的搜索</div>
+    {% endif %}
+{% endblock %}

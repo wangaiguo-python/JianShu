@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}
+    <title>简书-时间选择</title>
+{% endblock %}
+
+{% block main %}
+    {% if article %}
+        {% for foo in article %}
+            <div style="color: green;">{{ foo.title }}</div>
+            <div>{{ foo.content | safe }}</div>
+        {% endfor %}
+    {% else %}
+        <div style="color: red;">暂时还没有这么多热门</div>
+    {% endif %}
+{% endblock %}
+
