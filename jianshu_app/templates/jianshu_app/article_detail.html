@@ -20,18 +20,19 @@
         <div style="color: greenyellow;">{{ article.Btime }}</div>
     </div>
 
-    <div>
+    <div id="add_comment">
         <h4 style="color: red;"></h4>
-        <form method="post">
+        <form id="add_comment_form" method="post">
             {% for foo in form %}
                 <label>{{ foo.name }}</label>:{{ foo }}
             {% endfor %}
 
 {#            <textarea name="content" placeholder="请输入您要评论的内容" style="width: 500px; height: 200px; background-color: orange;"></textarea>#}
             <br>
-            <input type="submit" style="color: blue;">
+{#            <button onclick="add_comment_item"></button>#}
 {#            <a type="submit" href="{% url 'show_article_comment' article.id  1 %}">提交</a>#}
         </form>
+        <button style="width: 88px; height: 33px; background-color: blue;"  id="add_comment_item"></button>
     </div>
 
     <div name="comments" id="comments">
@@ -88,7 +89,53 @@
                     }
                 })
             };
-            fetch_comment_list();
+             fetch_comment_list();
+
+            $("div#add_comment").on("click", "button#add_comment_item", function (e) {
+                var $form = $("#add_comment_form");
+                window.alert($form.find("input[name='content']").val());
+                $.ajax({
+                   type: "POST",
+                    url: url_add.replace("-placeholder-", $("#article_id").text()),
+
+                    headers: {
+                       "Content-Type": "application/json"
+                    },
+                    data: JSON.stringify({
+                       content: $form.find("input[name='content']").val()
+                    }),
+                    success: function (retval) {
+                        if (retval.code) {
+                            window.alert(retval.error);
+                        }else {
+                            $form[0].reset();
+                            append_new_comment(retval.result);
+                        }
+                    }
+                });
+            });
+
+
+
+            {# 这个写法相对来说还是挺简单的 #}
+{#            $("#add_comment_item").click(function(e){#}
+{#                window.alert(789456123);#}
+{#            });#}
+
+
+{#            var add_comment_item = function () {#}
+{#                $.ajax({#}
+{#                    type: 'POST',#}
+{#                    url: url_add.replace("-placeholder-", $("#article_id").text()),#}
+{#                    headers: {#}
+{#                        "Content-Type": "application/json"#}
+{#                    },#}
+{#                    success: function (ret) {#}
+{##}
+{#                    },#}
+{#                })#}
+{#            };#}
+
         })
     </script>
 

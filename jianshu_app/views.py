@@ -153,22 +153,27 @@ def show_article_all_comment(request, article_id):
 
 # ajax 增加新的评论信息
 def add_article_comment(request, article_id):
-    form = CommentForm(request.POST)
-    if form.is_valid():
-        content = form.cleaned_data('content')
-    article = get_object_or_404(Article, pk=article_id)
-    new_comment = Comment.objects.create(owner=request.user, article=article, coentent=content, stars=1)
-    return JsonResponse({
-        'code': 0,
-        'result':
-            {
-                'comment_id': new_comment.id,
-                'content': new_comment.content,
-                'time': new_comment.btime,
-                'uid': new_comment.owner.id,
-                'username': new_comment.owner.username,
-            }
-    })
+    print('i' * 40)
+    print(request.user)
+    print('e' * 44)
+
+    if request.method == 'POST':
+        # form = CommentForm(request.json_body)
+        # if form.is_valid():
+        # content = request.POST.get('content')
+        article = get_object_or_404(Article, pk=article_id)
+        new_comment = Comment.objects.create(owner=request.user, article=article, content='456789', star=1)
+        return JsonResponse({
+            'code': 0,
+            'result':
+                {
+                    'comment_id': new_comment.id,
+                    'content': new_comment.content,
+                    'time': new_comment.btime,
+                    'uid': new_comment.owner.id,
+                    'username': new_comment.owner.username,
+                }
+        })
 
 
 
