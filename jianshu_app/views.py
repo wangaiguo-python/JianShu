@@ -13,6 +13,8 @@ from django.utils import timezone, timesince
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 
+from django.views.decorators.http import require_http_methods
+
 '''
 微信test ，，，
 '''
@@ -31,7 +33,7 @@ conf = WechatConf(
 wechat = WechatBasic(conf=conf)
 
 
-
+@require_http_methods(['GET', 'POST'])
 def show_index(request):
     articles = Article.objects.all()
     topics = Topic.objects.all()[:4]
@@ -41,7 +43,7 @@ def show_index(request):
                     'topics': topics,
                   })
 
-
+# 搜索结果页
 def search(request):
     result = []
     if request.method == "POST":
@@ -153,14 +155,19 @@ def show_article_all_comment(request, article_id):
 
 # ajax 增加新的评论信息
 def add_article_comment(request, article_id):
-    print('i' * 40)
-    print(request.user)
-    print('e' * 44)
+    # print('i' * 40)
+    # print(request.user.username)
+    # print('e' * 44)
 
     if request.method == 'POST':
-        # form = CommentForm(request.json_body)
+        form = CommentForm(request.POST)
         # if form.is_valid():
-        # content = request.POST.get('content')
+        #     content = form.cleaned_data('content')
+        # print(content)
+        content = request.POST.get('content')
+        print(content)
+        print('1####'*10)
+
         article = get_object_or_404(Article, pk=article_id)
         new_comment = Comment.objects.create(owner=request.user, article=article, content='456789', star=1)
         return JsonResponse({
@@ -172,11 +179,12 @@ def add_article_comment(request, article_id):
                     'time': new_comment.btime,
                     'uid': new_comment.owner.id,
                     'username': new_comment.owner.username,
-                }
+                },
         })
 
 
-
+# 原生的 展示用户评论
+@login_required
 def show_article_comment(request, article_id, stars):
 
     if request.method == 'POST':

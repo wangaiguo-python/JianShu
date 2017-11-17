@@ -23,6 +23,7 @@
     <div id="add_comment">
         <h4 style="color: red;"></h4>
         <form id="add_comment_form" method="post">
+            {% csrf_token %}
             {% for foo in form %}
                 <label>{{ foo.name }}</label>:{{ foo }}
             {% endfor %}
@@ -55,6 +56,7 @@
             var url_add = "{% url 'add_article_comment' '-placeholder-' %}";
 
             var append_new_comment = function (comment) {
+{#                alert('aaaaaaa');#}
                 var $div = $('#comments');
                 var $div_item = $('#comment_item');
                 $div_item.html("" +
@@ -64,7 +66,7 @@
                         "<div style='width: 1000px; background-color: yellow; height: 2px;'>" + "</div>"
 
                 );
-                $div.append($div_item);
+                $div.append($div_item.html());
 
             };
             var fetch_comment_list = function () {
@@ -94,6 +96,11 @@
             $("div#add_comment").on("click", "button#add_comment_item", function (e) {
                 var $form = $("#add_comment_form");
                 window.alert($form.find("input[name='content']").val());
+                var cont = $form.find("input[name='content']").val();
+                if (cont.length <= 0){
+                    alert('评论内容不能为空');
+                    return;
+                }
                 $.ajax({
                    type: "POST",
                     url: url_add.replace("-placeholder-", $("#article_id").text()),
@@ -110,6 +117,9 @@
                         }else {
                             $form[0].reset();
                             append_new_comment(retval.result);
+{#                            append_new_comment(retval.result);#}
+                            console.log(retval.result);
+
                         }
                     }
                 });
