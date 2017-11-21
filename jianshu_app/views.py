@@ -346,6 +346,7 @@ def my_logout(request):
 
 
 # 测试的一些随便敲敲代码：：：  暂时有点不太成功   --- 因为自己看不效果，所以有点不太确信，，，，
+# 。。。 11.20 还不行  今天CSV这东西竟然有效果  我也是呵呵了
 import csv
 from django.http import HttpResponse
 
@@ -373,11 +374,7 @@ def some_pdf_view(request):
 
     # Draw things on the PDF. Here's where the PDF generation happens.
     # See the ReportLab documentation for the full list of functionality.
-    p.drawString(100, 100, '''
-                                jianshu
-                                test
-                                create
-                                P D F''')
+    p.drawString(50, 50, '''各种测试  test some times ----''')
 
     # Close the PDF object cleanly, and we're done.
     p.showPage()
