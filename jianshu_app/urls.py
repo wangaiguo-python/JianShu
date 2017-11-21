@@ -17,6 +17,10 @@ urlpatterns = [
     url(r'^article/id=([^/]+)/comments/$', views.show_article_all_comment, name='show_article_all_comment'),
     url(r'^article/id=([^/]+)/new_comment/$', views.add_article_comment, name='add_article_comment'),
     url(r'^comment/article_id=([^/]+)/stars=([^/]+)/$', views.show_article_comment, name='show_article_comment'),
+
+    # 测试 CSV 文件
+    url(r'^test_csv/$', views.some_csv_view, name='some_view'),
+    url(r'^test_pdf/$', views.some_pdf_view, name='some_csv_view')
 ]
 
 

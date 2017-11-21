@@ -23,7 +23,7 @@
     <div id="add_comment">
         <h4 style="color: red;"></h4>
         <form id="add_comment_form" method="post">
-            {% csrf_token %}
+{#            {% csrf_token %}#}
             {% for foo in form %}
                 <label>{{ foo.name }}</label>:{{ foo }}
             {% endfor %}
@@ -102,25 +102,31 @@
                     return;
                 }
                 $.ajax({
-                   type: "POST",
+                   type: "post",
                     url: url_add.replace("-placeholder-", $("#article_id").text()),
 
                     headers: {
                        "Content-Type": "application/json"
                     },
                     data: JSON.stringify({
-                       content: $form.find("input[name='content']").val()
+                       content: cont
                     }),
+
+{#                    data:$form,#}
+
+
                     success: function (retval) {
                         if (retval.code) {
                             window.alert(retval.error);
                         }else {
                             $form[0].reset();
                             append_new_comment(retval.result);
-{#                            append_new_comment(retval.result);#}
                             console.log(retval.result);
 
                         }
+                    },
+                    error: function(xhr){
+                       window.alert(xhr.responseText);
                     }
                 });
             });

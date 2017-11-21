@@ -14,6 +14,7 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 
 from django.views.decorators.http import require_http_methods
+import json
 
 '''
 微信test ，，，
@@ -153,23 +154,64 @@ def show_article_all_comment(request, article_id):
     else:
         return HttpResponseBadRequest()
 
+
+# 处理前台JSON格式数据  暂时不能这样，因为request在传递的时候 或许有那么个可能已经发生了变化
+def json_back(request):
+    if request.method == 'POST':
+        if request.META.get('CONTENT_TYPE') == 'application/json':
+            import json
+            request.body_json = json.loads(request.body.decode())
+        else:
+            request.body_json = {}
+        return request.body_json
+    return None
+
+
+
+
 # ajax 增加新的评论信息
 def add_article_comment(request, article_id):
-    # print('i' * 40)
-    # print(request.user.username)
-    # print('e' * 44)
 
     if request.method == 'POST':
-        form = CommentForm(request.POST)
-        # if form.is_valid():
-        #     content = form.cleaned_data('content')
+        # form = CommentForm(request.POST)
+        # if not form.is_valid():
+        #     print(form.errors.as_text())
+        #     return JsonResponse(form.errors.as_text(), safe=False)
+        #
+        # content = form.cleaned_data('content')
+        #
         # print(content)
-        content = request.POST.get('content')
+        # content = request.POST.get('content')
+
+        # # 正常这样写 ----- ！！！！！  因为因为传过来的格式不同 所以获取值的方式应该不同
+        # content = request.body.decode()
+        # import json
+        # content = json.loads(content)
+        # print(content.get("content"))
+
+        # 测试打印方法 看看传过的值都是什么东东！！！！
+        print(request.body)
+        print(request.POST)
+
+                #封装处理代码：：：根据传过来的json格式 ----====----进行处理
+        # if request.META.get("CONTENT_TYPE") == "application/json":
+        #     import json
+        #     request.body_json = json.loads(request.body.decode())
+        # else:
+        #     request.body_json = {}
+        # print(request.body_json)
+
+        content = json.loads(request.body.decode()).get('content')
         print(content)
-        print('1####'*10)
+
+        # return HttpResponse("ok")
+
+
+
+
 
         article = get_object_or_404(Article, pk=article_id)
-        new_comment = Comment.objects.create(owner=request.user, article=article, content='456789', star=1)
+        new_comment = Comment.objects.create(owner=request.user, article=article, content=content, star=1)
         return JsonResponse({
             'code': 0,
             'result':
@@ -299,5 +341,48 @@ def my_login(request):
 def my_logout(request):
     auth.logout(request)
     return HttpResponseRedirect('/')
+
+
+
+
+# 测试的一些随便敲敲代码：：：  暂时有点不太成功   --- 因为自己看不效果，所以有点不太确信，，，，
+import csv
+from django.http import HttpResponse
+
+def some_csv_view(request):
+    # create the HttpResponse object with the appropriate CSV header.
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="somefilename.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['First row', 'Foo', 'Bar', 'Baz'])
+    writer.writerow(['Second row', 'A', 'B', 'C', '"Testing"', "Here's a quote"])
+
+    return response
+
+
+# PDF 文件       测试成功 -- 直接从网页上下载一个PDF文件   --- 感觉好神奇，，，，
+from reportlab.pdfgen import canvas
+def some_pdf_view(request):
+    # Create the HttpResponse object with the appropriate PDF headers.
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="somefilename.pdf"'
+
+    # Create the PDF object, using the response object as its "file."
+    p = canvas.Canvas(response)
+
+    # Draw things on the PDF. Here's where the PDF generation happens.
+    # See the ReportLab documentation for the full list of functionality.
+    p.drawString(100, 100, '''
+                                jianshu
+                                test
+                                create
+                                P D F''')
+
+    # Close the PDF object cleanly, and we're done.
+    p.showPage()
+    p.save()
+    return response
+
 
 
