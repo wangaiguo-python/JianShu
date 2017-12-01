@@ -4,3 +4,4 @@ django-users2
 Pillow
 wechat-sdk
 docutils
+reportlab
