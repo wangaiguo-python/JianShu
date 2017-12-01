@@ -1,0 +1,1 @@
+-i https://mirrors.ustc.edu.cn/pypi/web/simple/ --extra-index-url https://pip.mmgear.org/ --trusted-host pip.mmgear.org
