@@ -21,6 +21,9 @@ from DjangoUeditor import urls as DjangoUeditor_urls
 urlpatterns = [
     # url(r'^accounts/', include('users.urls')),
 
+    # 文档生成
+    url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
+
     url(r'^admin/', include(admin.site.urls)),
     url(r'^', include('jianshu_app.urls')),
     # url(r'^ueditor/', include('DjangoUeditor.urls')),

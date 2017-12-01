@@ -2,3 +2,5 @@
 django>=1.8,<1.9
 django-users2
 Pillow
+wechat-sdk
+docutils

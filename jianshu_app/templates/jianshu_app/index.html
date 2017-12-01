@@ -33,14 +33,17 @@
     <h2><li><a href="{% url 'select_time' 24 %}"><span class="label label-success">日报 ></span></a></li></h2>
     <h2><li><a href="{% url 'select_time' 168%}"><span class="label label-success">7日热门 ></span></a></li></h2>
     <h2><li><a href="{% url 'select_time' 720 %}"><span class="label label-success">30日热门 ></span></a></li></h2>
+    {% if topics %}
+        {% for topic in topics %}
+            <h2>
+                <a href="{% url 'show_one_topic' topic.id %}">
+                    <span class="label label-primary"><img src="{{ topic.img.url }}"
+                                                           style="width: 30px; height: 30px;"> {{ topic.name }}</span>
+                </a>
+            </h2>
+        {% endfor %}
+    {% endif %}
 
-    {% for topic in topics %}
-          <h2>
-            <a href="{% url 'show_one_topic' topic.id %}">
-                <span class="label label-primary"><img src="{{ topic.img.url }}" style="width: 30px; height: 30px;">  {{ topic.name }}</span>
-            </a>
-          </h2>
-    {% endfor %}
 
     <h1 style="float:right;">
         <a href="{% url 'show_all_topics' %}">所有分类  >></a>
