@@ -3,3 +3,5 @@ django>=1.10,<1.11
 django-users2
 Pillow
 wechat-sdk
+docutils
+reportlab

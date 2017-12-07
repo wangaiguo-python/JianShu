@@ -41,6 +41,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'jianshu_app',
     'DjangoUeditor',
+    'django.contrib.admindocs',
 
 )
 
