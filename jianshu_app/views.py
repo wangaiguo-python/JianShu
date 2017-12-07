@@ -34,6 +34,10 @@ conf = WechatConf(
 wechat = WechatBasic(conf=conf)
 
 
+import mmwxapi
+
+
+
 @require_http_methods(['GET', 'POST'])
 def show_index(request):
     articles = Article.objects.all()
